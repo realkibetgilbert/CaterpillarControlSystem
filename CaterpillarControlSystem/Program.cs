@@ -12,41 +12,54 @@ class Program
 
         Caterpillar caterpillar = new Caterpillar(planet);
 
+
         while (true)
         {
             Console.Clear();
 
             DisplayPlanet(planet, caterpillar);
 
-            Console.WriteLine("Enter a command (U/D/L/R/G/S/Q):");
+            Console.WriteLine("Enter a command (e.g., 'U 4' to move up 4 times or 'Q' to quit):");
 
             string input = Console.ReadLine().ToUpper();
 
-            switch (input)
+            string[] parts = input.Split(' ');
+
+            if (parts.Length == 2 && int.TryParse(parts[1], out int steps))
             {
-                case "U":
-                    caterpillar.MoveUp();
-                    break;
-                case "D":
-                    caterpillar.MoveDown();
-                    break;
-                case "L":
-                    caterpillar.MoveLeft();
-                    break;
-                case "R":
-                    caterpillar.MoveRight();
-                    break;
-                case "G":
-                    caterpillar.Grow();
-                    break;
-                case "S":
-                    caterpillar.Shrink();
-                    break;
-                case "Q":
-                    return;
-                default:
-                    Console.WriteLine("Invalid command. Please enter U, D, L, R, G, S, or Q.");
-                    break;
+                for (int i = 0; i < steps;i++)
+                {
+                    switch (parts[0])
+                    {
+                        case "U":
+                            caterpillar.MoveUp();
+                            break;
+                        case "D":
+                            caterpillar.MoveDown();
+                            break;
+                        case "L":
+                            caterpillar.MoveLeft();
+                            break;
+                        case "R":
+                            caterpillar.MoveRight();
+                            break;
+                        case "G":
+                            caterpillar.Grow();
+                            break;
+                        case "S":
+                            caterpillar.Shrink();
+                            break;
+                        case "Q":
+                            return;
+                        default:
+                            Console.WriteLine("Invalid command. Please enter U, D, L, R, G, S, or Q.");
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid command format: " + input);
             }
         }
     }
