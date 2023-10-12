@@ -3,74 +3,134 @@
     private List<string> segments;
     private int headX;
     private int headY;
+    private int tailX;
+    private int tailY;
     private const int MaxSegments = 5;
+    private char[,] planet;
 
-    public Caterpillar()
+    public Caterpillar(char[,] planet)
     {
         segments = new List<string> { "H", "T" };
-        headX = 0;
-        headY = 0; 
+        headX = planet.GetLength(0) / 2;
+        headY = planet.GetLength(1) - 1;
+        tailX = headX;
+        tailY = headY - 1;
+        this.planet = planet;
     }
 
-    
     public void MoveUp()
     {
-        
-        headY--;
+        if (headY > 0)
+        {
+            tailX = headX;
+            tailY = headY;
+            headY--;
+            CheckCollision();
+        }
     }
 
-    
     public void MoveDown()
     {
-      
-        headY++;
+        if (headY < planet.GetLength(1) - 1)
+        {
+            tailX = headX;
+            tailY = headY;
+            headY++;
+            CheckCollision();
+        }
     }
 
-    
     public void MoveLeft()
     {
-        
-        headX--;
+        if (headX > 0)
+        {
+            tailX = headX;
+            tailY = headY;
+            headX--;
+            CheckCollision();
+        }
     }
 
-    
     public void MoveRight()
     {
-       
-        headX++;
+        if (headX < planet.GetLength(0) - 1)
+        {
+            tailX = headX;
+            tailY = headY;
+            headX++;
+            CheckCollision();
+        }
     }
 
-    
+    public void Grow()
+    {
+        if (segments.Count < MaxSegments)
+        {
+            segments.Insert(1, "0");
+        }
+    }
+
+    public void Shrink()
+    {
+        if (segments.Count > 2)
+        {
+            segments.RemoveAt(segments.Count - 1);
+        }
+    }
+
+    public List<string> GetSegments()
+    {
+        return segments;
+    }
+
     public int GetHeadX()
     {
         return headX;
     }
 
-    
     public int GetHeadY()
     {
         return headY;
     }
 
-    
-    public void Grow()
+    public int GetTailX()
     {
-        if (segments.Count < MaxSegments)
+        return tailX;
+    }
+
+    public int GetTailY()
+    {
+        return tailY;
+    }
+
+    private void CheckCollision()
+    {
+        char currentCell = planet[headX, headY];
+
+        if (currentCell == '$')
         {
-            segments.Insert(1, "0"); 
+            segments.Insert(1, "$");
+            planet[headX, headY] = '*';
+        }
+        else if (currentCell == 'B')
+        {
+            Grow();
+            planet[headX, headY] = '*';
+        }
+        else if (currentCell == '#')
+        {
+            Disintegrate();
         }
     }
 
-    
-    public void Shrink()
+    private void Disintegrate()
     {
-        if (segments.Count > 2) 
-        {
-            segments.RemoveAt(segments.Count - 1);
-        }
-    }
-    public List<string> GetSegments()
-    {
-        return segments;
+        segments.Clear();
+        segments.Add("H");
+        segments.Add("T");
+        headX = planet.GetLength(0) / 2;
+        headY = planet.GetLength(1) - 1;
+        tailX = headX;
+        tailY = headY - 1;
     }
 }
