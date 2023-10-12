@@ -1,4 +1,6 @@
-﻿class Caterpillar
+﻿using System;
+
+class Caterpillar
 {
     private List<string> segments;
     private int headX;
@@ -134,3 +136,5 @@
         tailY = headY - 1;
     }
 }
+
+
