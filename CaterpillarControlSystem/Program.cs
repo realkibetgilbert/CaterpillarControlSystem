@@ -79,8 +79,6 @@ class Program
                 planet[x, y] = '*';
             }
         }
-    }
-
         
         for (int i = 0; i < 5; i++) 
         {
