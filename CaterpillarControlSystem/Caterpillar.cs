@@ -63,14 +63,18 @@ class Caterpillar
             CheckCollision();
         }
     }
-
     public void Grow()
     {
         if (segments.Count < MaxSegments)
         {
-            segments.Insert(1, "0");
+            segments.Insert(1, "0"); 
+
+            segments.Insert(2, "T"); 
         }
     }
+
+
+
 
     public void Shrink()
     {

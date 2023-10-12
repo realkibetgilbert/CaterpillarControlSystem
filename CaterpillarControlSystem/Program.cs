@@ -51,20 +51,7 @@ class Program
         }
     }
 
-    //static void InitializePlanet(char[,] planet)
-    //{
-    //    for (int x = 0; x < planet.GetLength(0); x++)
-    //    {
-    //        for (int y = 0; y < planet.GetLength(1); y++)
-    //        {
-    //            planet[x, y] = '*';
-    //        }
-    //    }
 
-
-
-
-    //}
     static void InitializePlanet(char[,] planet)
     {
         int planetWidth = planet.GetLength(0);
@@ -125,4 +112,7 @@ class Program
             Console.WriteLine();
         }
     }
+
+
+
 }
