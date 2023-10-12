@@ -60,6 +60,20 @@ class Program
                 planet[x, y] = '*';
             }
         }
+
+
+        // adding obstacles to specific coordinates of the planet
+        planet[5, 5] = '#';
+
+        planet[10, 15] = '#';
+
+        //adding spices to the specific cordinates of the planet
+        planet[12, 20] = '$';
+        planet[18, 8] = '$';
+
+        //planet[6, 8] = 'B';
+        planet[24, 18] = 'B';
+        planet[6, 8] = 'B';
     }
 
     static void DisplayPlanet(char[,] planet, Caterpillar caterpillar)

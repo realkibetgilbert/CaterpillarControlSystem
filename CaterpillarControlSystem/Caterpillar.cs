@@ -109,7 +109,7 @@
 
         if (currentCell == '$')
         {
-            segments.Insert(1, "$");
+
             planet[headX, headY] = '*';
         }
         else if (currentCell == 'B')
