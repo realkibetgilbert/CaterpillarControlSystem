@@ -51,30 +51,58 @@ class Program
         }
     }
 
+    //static void InitializePlanet(char[,] planet)
+    //{
+    //    for (int x = 0; x < planet.GetLength(0); x++)
+    //    {
+    //        for (int y = 0; y < planet.GetLength(1); y++)
+    //        {
+    //            planet[x, y] = '*';
+    //        }
+    //    }
+
+
+
+
+    //}
     static void InitializePlanet(char[,] planet)
     {
-        for (int x = 0; x < planet.GetLength(0); x++)
+        int planetWidth = planet.GetLength(0);
+        int planetHeight = planet.GetLength(1);
+        Random random = new Random();
+
+        // Fill the planet with '*' initially
+        for (int x = 0; x < planetWidth; x++)
         {
-            for (int y = 0; y < planet.GetLength(1); y++)
+            for (int y = 0; y < planetHeight; y++)
             {
                 planet[x, y] = '*';
             }
         }
 
+        
+        for (int i = 0; i < 5; i++) 
+        {
+            int x = random.Next(planetWidth);
+            int y = random.Next(planetHeight);
+            planet[x, y] = '#';
+        }
 
-        // adding obstacles to specific coordinates of the planet
-        planet[5, 5] = '#';
+        for (int i = 0; i < 5; i++) 
+        {
+            int x = random.Next(planetWidth);
+            int y = random.Next(planetHeight);
+            planet[x, y] = '$';
+        }
 
-        planet[10, 15] = '#';
-
-        //adding spices to the specific cordinates of the planet
-        planet[12, 20] = '$';
-        planet[18, 8] = '$';
-
-        //planet[6, 8] = 'B';
-        planet[24, 18] = 'B';
-        planet[6, 8] = 'B';
+        for (int i = 0; i < 5; i++) 
+        {
+            int x = random.Next(planetWidth);
+            int y = random.Next(planetHeight);
+            planet[x, y] = 'B';
+        }
     }
+
 
     static void DisplayPlanet(char[,] planet, Caterpillar caterpillar)
     {

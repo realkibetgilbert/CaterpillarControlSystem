@@ -114,7 +114,7 @@
         }
         else if (currentCell == 'B')
         {
-            Grow();
+          
             planet[headX, headY] = '*';
         }
         else if (currentCell == '#')
