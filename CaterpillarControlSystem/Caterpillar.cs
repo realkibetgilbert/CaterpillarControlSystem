@@ -1,6 +1,6 @@
 ﻿using System;
 
-class Caterpillar
+public class Caterpillar
 {
     private List<string> segments;
     private int headX;
@@ -63,20 +63,30 @@ class Caterpillar
             CheckCollision();
         }
     }
+
     public void Grow()
     {
         if (segments.Count < MaxSegments)
         {
-            segments.Insert(1, "0"); 
+            // Store the current coordinates of 'T'
+            int currentTailX = this.GetTailX();
+            int currentTailY = this.GetTailY();
 
-            segments.Insert(2, "T"); 
+            // Insert "0" behind the head
+            segments.Insert(1, "0");
+
+            // Update the tail coordinates to move it backward
+            tailX -= (tailX - headX);
+            tailY -= (tailY - headY);
+
+            // Update the planet: Clear the old 'T' position and set the new 'T'
+            planet[currentTailX, currentTailY] = '0';
+            planet[tailX, tailY] = 'T';
         }
     }
 
 
-
-
-    public void Shrink()
+public void Shrink()
     {
         if (segments.Count > 2)
         {

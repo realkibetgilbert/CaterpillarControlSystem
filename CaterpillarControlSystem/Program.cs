@@ -1,7 +1,7 @@
 ﻿
 
 
-class Program
+public class Program
 {
     static void Main()
     {
@@ -27,7 +27,7 @@ class Program
 
             if (parts.Length == 2 && int.TryParse(parts[1], out int steps))
             {
-                for (int i = 0; i < steps;i++)
+                for (int i = 0; i < steps; i++)
                 {
                     switch (parts[0])
                     {
@@ -65,13 +65,13 @@ class Program
     }
 
 
-    static void InitializePlanet(char[,] planet)
+    public static void InitializePlanet(char[,] planet)
     {
         int planetWidth = planet.GetLength(0);
         int planetHeight = planet.GetLength(1);
         Random random = new Random();
 
-        // Fill the planet with '*' initially
+        // Fill the planet with '*' initially 
         for (int x = 0; x < planetWidth; x++)
         {
             for (int y = 0; y < planetHeight; y++)
@@ -79,22 +79,24 @@ class Program
                 planet[x, y] = '*';
             }
         }
-        
-        for (int i = 0; i < 5; i++) 
+        // fill planet with obstacles
+        for (int i = 0; i < 5; i++)
         {
             int x = random.Next(planetWidth);
             int y = random.Next(planetHeight);
             planet[x, y] = '#';
         }
+        //fill planet with spices
 
-        for (int i = 0; i < 5; i++) 
+        for (int i = 0; i < 5; i++)
         {
             int x = random.Next(planetWidth);
             int y = random.Next(planetHeight);
             planet[x, y] = '$';
         }
+        // fill planet with boosters
 
-        for (int i = 0; i < 5; i++) 
+        for (int i = 0; i < 5; i++)
         {
             int x = random.Next(planetWidth);
             int y = random.Next(planetHeight);
