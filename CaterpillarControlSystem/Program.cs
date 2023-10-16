@@ -1,7 +1,4 @@
-﻿
-
-
-public class Program
+﻿public class Program
 {
     static void Main()
     {
@@ -19,7 +16,7 @@ public class Program
 
             DisplayPlanet(planet, caterpillar);
 
-            Console.WriteLine("Enter a command (e.g., 'U 4' to move up 4 times or 'Q' to quit):");
+            Console.WriteLine("Enter a command (e.g., 'U 4' to move up 4 times):");
 
             string input = Console.ReadLine().ToUpper();
 
@@ -49,10 +46,8 @@ public class Program
                         case "S":
                             caterpillar.Shrink();
                             break;
-                        case "Q":
-                            return;
                         default:
-                            Console.WriteLine("Invalid command. Please enter U, D, L, R, G, S, or Q.");
+                            Console.WriteLine("Invalid command. Please enter U, D, L, R, G, or S");
                             break;
                     }
                 }

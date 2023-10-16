@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 public class Caterpillar
 {
     private List<string> segments;
@@ -119,18 +118,16 @@ public void Shrink()
         return tailY;
     }
 
-    private void CheckCollision()
+    public void CheckCollision()
     {
         char currentCell = planet[headX, headY];
 
         if (currentCell == '$')
         {
-
             planet[headX, headY] = '*';
         }
         else if (currentCell == 'B')
         {
-          
             planet[headX, headY] = '*';
         }
         else if (currentCell == '#')
