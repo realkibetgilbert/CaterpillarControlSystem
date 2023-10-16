@@ -1,7 +1,17 @@
-﻿public class Program
+﻿using Serilog;
+using Serilog.Formatting.Json;
+
+public class Program
 {
+    
+
+
     static void Main()
     {
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.File(new JsonFormatter(), @"C:\Temp\caterpillar.log", rollingInterval: RollingInterval.Day)
+            .CreateLogger();
+
         int planetWidth = 30;
         int planetHeight = 30;
         char[,] planet = new char[planetWidth, planetHeight];
@@ -9,16 +19,25 @@
 
         Caterpillar caterpillar = new Caterpillar(planet);
 
-
         while (true)
         {
             Console.Clear();
 
             DisplayPlanet(planet, caterpillar);
 
-            Console.WriteLine("Enter a command (e.g., 'U 4' to move up 4 times):");
+            Console.WriteLine("Enter a command (e.g., 'U 4' to move up 4 times UNDO or REDO):");
 
             string input = Console.ReadLine().ToUpper();
+
+            if(input == "UNDO")
+            {
+                caterpillar.Undo();
+            }
+
+            if(input == "REDO")
+            {
+                caterpillar.Redo();
+            }
 
             string[] parts = input.Split(' ');
 
@@ -47,7 +66,7 @@
                             caterpillar.Shrink();
                             break;
                         default:
-                            Console.WriteLine("Invalid command. Please enter U, D, L, R, G, or S");
+                            Console.WriteLine("Invalid command. Please enter U, D, L, R, G, S, UNDO, or REDO");
                             break;
                     }
                 }

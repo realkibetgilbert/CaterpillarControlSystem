@@ -1,4 +1,7 @@
 ﻿
+using CaterpillarControlSystem;
+using Serilog;
+
 public class Caterpillar
 {
     private List<string> segments;
@@ -8,6 +11,8 @@ public class Caterpillar
     private int tailY;
     private const int MaxSegments = 5;
     private char[,] planet;
+    private Stack<ICommand> commandHistory = new Stack<ICommand>();
+    private Stack<ICommand> redoHistory = new Stack<ICommand>();
 
     public Caterpillar(char[,] planet)
     {
@@ -17,50 +22,83 @@ public class Caterpillar
         tailX = headX;
         tailY = headY - 1;
         this.planet = planet;
+
     }
 
     public void MoveUp()
     {
         if (headY > 0)
         {
-            tailX = headX;
-            tailY = headY;
-            headY--;
-            CheckCollision();
+            ICommand command = new MoveUpCommand(this);
+            command.Execute();
+            commandHistory.Push(command);
+            Log.Information("Command: MoveUp executed.");
         }
+    }
+
+    public void MovingUp()
+    {
+        tailX = headX;
+        tailY = headY;
+        headY--;
+        CheckCollision();
     }
 
     public void MoveDown()
     {
         if (headY < planet.GetLength(1) - 1)
         {
-            tailX = headX;
-            tailY = headY;
-            headY++;
-            CheckCollision();
+            ICommand command = new MovingDownCommand(this);
+            command.Execute();
+            commandHistory.Push(command);
+            Log.Information("Command: MoveDown executed.");
         }
+    }
+
+    public void MovingDown()
+    {
+        tailX = headX;
+        tailY = headY;
+        headY++;
+        CheckCollision();
     }
 
     public void MoveLeft()
     {
         if (headX > 0)
         {
-            tailX = headX;
-            tailY = headY;
-            headX--;
-            CheckCollision();
+            ICommand command = new MovingLeftCommand(this);
+            command.Execute();
+            commandHistory.Push(command);
+            Log.Information("Command: Moveleft executed.");
         }
+    }
+
+    public void MovingLeft()
+    {
+        tailX = headX;
+        tailY = headY;
+        headX--;
+        CheckCollision();
     }
 
     public void MoveRight()
     {
         if (headX < planet.GetLength(0) - 1)
         {
-            tailX = headX;
-            tailY = headY;
-            headX++;
-            CheckCollision();
+            ICommand command = new MovingRightCommand(this);
+            command.Execute();
+            commandHistory.Push(command);
+            Log.Information("Command: MoveRight executed.");
         }
+    }
+
+    public void MovingRight()
+    {
+        tailX = headX;
+        tailY = headY;
+        headX++;
+        CheckCollision();
     }
 
     public void Grow()
@@ -85,7 +123,7 @@ public class Caterpillar
     }
 
 
-public void Shrink()
+    public void Shrink()
     {
         if (segments.Count > 2)
         {
@@ -136,7 +174,7 @@ public void Shrink()
         }
     }
 
-    private void Disintegrate()
+    public void Disintegrate()
     {
         segments.Clear();
         segments.Add("H");
@@ -146,6 +184,28 @@ public void Shrink()
         tailX = headX;
         tailY = headY - 1;
     }
+
+    public void Undo()
+    {
+        if (commandHistory.Count > 0)
+        {
+            ICommand command = commandHistory.Pop();
+            command.Undo();
+            redoHistory.Push(command);
+            Log.Information("Undo: Command {CommandName} undone.", command.GetType().Name);
+        }
+    }
+
+    public void Redo()
+    {
+        if (redoHistory.Count > 0)
+        {
+            ICommand command = redoHistory.Pop();
+            command.Execute();
+            commandHistory.Push(command);
+        }
+    }
+
 }
 
 
