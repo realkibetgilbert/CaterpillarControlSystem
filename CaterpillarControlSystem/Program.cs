@@ -74,7 +74,6 @@ public class Program
         }
     }
 
-
     public static void InitializePlanet(char[,] planet)
     {
         int planetWidth = planet.GetLength(0);
@@ -113,8 +112,6 @@ public class Program
             planet[x, y] = 'B';
         }
     }
-
-
     static void DisplayPlanet(char[,] planet, Caterpillar caterpillar)
     {
         for (int y = 0; y < planet.GetLength(1); y++)
@@ -137,7 +134,5 @@ public class Program
             Console.WriteLine();
         }
     }
-
-
 
 }

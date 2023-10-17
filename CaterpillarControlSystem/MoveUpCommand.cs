@@ -11,7 +11,6 @@
         {
             caterpillar.MovingUp();
         }
-
         public void Undo()
         {
             caterpillar.MovingDown();

@@ -15,7 +15,6 @@ public class Caterpillar
     private Stack<ICommand> redoHistory = new Stack<ICommand>();
     private Dictionary<ICommand, int> commandExecutionCount = new Dictionary<ICommand, int>();
 
-
     public Caterpillar(char[,] planet)
     {
         segments = new List<string> { "H", "T" };
@@ -26,7 +25,6 @@ public class Caterpillar
         this.planet = planet;
 
     }
-
     public void MoveUp(int steps)
     {
         if (headY > 0)
@@ -41,9 +39,6 @@ public class Caterpillar
             }
         }
     }
-
-    
-
     public void MovingUp()
     {
         tailX = headX;
@@ -51,7 +46,6 @@ public class Caterpillar
         headY--;
         CheckCollision();
     }
-
     public void MoveDown(int steps)
     {
         if (headY < planet.GetLength(1) - 1)
@@ -66,7 +60,6 @@ public class Caterpillar
             }
         }
     }
-
     public void MovingDown()
     {
         tailX = headX;
@@ -74,7 +67,6 @@ public class Caterpillar
         headY++;
         CheckCollision();
     }
-
     public void MoveLeft(int steps)
     {
         if (headX > 0)
@@ -89,7 +81,6 @@ public class Caterpillar
             }
         }
     }
-
     public void MovingLeft()
     {
         tailX = headX;
@@ -97,7 +88,6 @@ public class Caterpillar
         headX--;
         CheckCollision();
     }
-
     public void MoveRight(int steps)
     {
         if (headX < planet.GetLength(0) - 1)
@@ -112,7 +102,6 @@ public class Caterpillar
             }
         }
     }
-
     public void MovingRight()
     {
         tailX = headX;
@@ -151,8 +140,6 @@ public class Caterpillar
             planet[tailX, tailY] = 'T';
         }
     }
-
-
     public void Shrink()
     {
         if (segments.Count > 2)
@@ -160,32 +147,26 @@ public class Caterpillar
             segments.RemoveAt(segments.Count - 1);
         }
     }
-
     public List<string> GetSegments()
     {
         return segments;
     }
-
     public int GetHeadX()
     {
         return headX;
     }
-
     public int GetHeadY()
     {
         return headY;
     }
-
     public int GetTailX()
     {
         return tailX;
     }
-
     public int GetTailY()
     {
         return tailY;
     }
-
     public void CheckCollision()
     {
         char currentCell = planet[headX, headY];
@@ -203,7 +184,6 @@ public class Caterpillar
             Disintegrate();
         }
     }
-
     public void Disintegrate()
     {
         segments.Clear();
@@ -214,7 +194,6 @@ public class Caterpillar
         tailX = headX;
         tailY = headY - 1;
     }
-
     public void Undo()
     {
         if (commandHistory.Count > 0)
@@ -234,7 +213,6 @@ public class Caterpillar
             Console.WriteLine("Nothing to undo.");
         }
     }
-
     public void Redo()
     {
         if (redoHistory.Count > 0)
@@ -257,7 +235,6 @@ public class Caterpillar
             Console.WriteLine("Nothing to redo.");
         }
     }
-
 
 }
 
