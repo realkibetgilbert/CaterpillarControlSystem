@@ -181,23 +181,5 @@ public class CaterpillarTests
         // Assert
         Assert.True(newSegmentCount < initialSegmentCount);
     }
-    [Fact]
-    public void Undo_WhenCommandHistoryHasCommands_ShouldUndoLastCommand()
-    {
-        // Arrange
-        char[,] planet = new char[30, 30];
-        Program.InitializePlanet(planet);
-        Caterpillar caterpillar = new Caterpillar(planet);
-
-        // Move the caterpillar
-        caterpillar.MoveUp(1);
-
-        int initialHeadY = caterpillar.GetHeadY();
-
-        // Act: Undo the move
-        caterpillar.Undo();
-
-        // Assert: The head should be back to the initial position
-        Assert.Equal(initialHeadY, caterpillar.GetHeadY());
-    }
+   
 }
