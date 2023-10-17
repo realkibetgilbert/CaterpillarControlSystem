@@ -3,9 +3,6 @@ using Serilog.Formatting.Json;
 
 public class Program
 {
-    
-
-
     static void Main()
     {
         Log.Logger = new LoggerConfiguration()
@@ -25,55 +22,54 @@ public class Program
 
             DisplayPlanet(planet, caterpillar);
 
-            Console.WriteLine("Enter a command (e.g., 'U 4' to move up 4 times UNDO or REDO):");
+            Console.WriteLine("Enter a command (e.g., 'U 4' to move up 4 times 'UNDO' to undo  or 'REDO' to redo):");
 
             string input = Console.ReadLine().ToUpper();
 
-            if(input == "UNDO")
+            if (input.Equals("UNDO"))
             {
                 caterpillar.Undo();
             }
-
-            if(input == "REDO")
+            else if (input.Equals("REDO"))
             {
                 caterpillar.Redo();
             }
-
-            string[] parts = input.Split(' ');
-
-            if (parts.Length == 2 && int.TryParse(parts[1], out int steps))
-            {
-                for (int i = 0; i < steps; i++)
-                {
-                    switch (parts[0])
-                    {
-                        case "U":
-                            caterpillar.MoveUp();
-                            break;
-                        case "D":
-                            caterpillar.MoveDown();
-                            break;
-                        case "L":
-                            caterpillar.MoveLeft();
-                            break;
-                        case "R":
-                            caterpillar.MoveRight();
-                            break;
-                        case "G":
-                            caterpillar.Grow();
-                            break;
-                        case "S":
-                            caterpillar.Shrink();
-                            break;
-                        default:
-                            Console.WriteLine("Invalid command. Please enter U, D, L, R, G, S, UNDO, or REDO");
-                            break;
-                    }
-                }
-            }
             else
             {
-                Console.WriteLine("Invalid command format: " + input);
+                string[] parts = input.Split(' ');
+
+                if (parts.Length == 2 && int.TryParse(parts[1], out int steps))
+                {
+                        switch (parts[0])
+                        {
+                            case "U":
+                                caterpillar.MoveUp(steps);
+                                break;
+                            case "D":
+                                caterpillar.MoveDown(steps);
+                                break;
+                            case "L":
+                                caterpillar.MoveLeft(steps);
+                                break;
+                            case "R":
+                                caterpillar.MoveRight(steps);
+                                break;
+                            case "G":
+                                caterpillar.Grow();
+                                break;
+                            case "S":
+                                caterpillar.Shrink();
+                                break;
+                            default:
+                                Console.WriteLine("Invalid command. Please enter U, D, L, R, G, S, UNDO, or REDO");
+                                break;
+                        
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid command format: " + input);
+                }
             }
         }
     }

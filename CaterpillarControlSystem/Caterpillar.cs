@@ -13,6 +13,8 @@ public class Caterpillar
     private char[,] planet;
     private Stack<ICommand> commandHistory = new Stack<ICommand>();
     private Stack<ICommand> redoHistory = new Stack<ICommand>();
+    private Dictionary<ICommand, int> commandExecutionCount = new Dictionary<ICommand, int>();
+
 
     public Caterpillar(char[,] planet)
     {
@@ -25,16 +27,22 @@ public class Caterpillar
 
     }
 
-    public void MoveUp()
+    public void MoveUp(int steps)
     {
         if (headY > 0)
         {
-            ICommand command = new MoveUpCommand(this);
-            command.Execute();
-            commandHistory.Push(command);
-            Log.Information("Command: MoveUp executed.");
+            for (int i = 0; i < steps; i++)
+            {
+                ICommand command = new MoveUpCommand(this);
+                command.Execute();
+                commandHistory.Push(command);
+                Log.Information("Command: MoveUp executed.");
+                UpdateCommandExecutionCount(command, steps);
+            }
         }
     }
+
+    
 
     public void MovingUp()
     {
@@ -44,14 +52,18 @@ public class Caterpillar
         CheckCollision();
     }
 
-    public void MoveDown()
+    public void MoveDown(int steps)
     {
         if (headY < planet.GetLength(1) - 1)
         {
-            ICommand command = new MovingDownCommand(this);
-            command.Execute();
-            commandHistory.Push(command);
-            Log.Information("Command: MoveDown executed.");
+            for (int i = 0; i < steps; i++)
+            {
+                ICommand command = new MovingDownCommand(this);
+                command.Execute();
+                commandHistory.Push(command);
+                Log.Information("Command: MoveDown executed.");
+                UpdateCommandExecutionCount(command, steps);
+            }
         }
     }
 
@@ -63,14 +75,18 @@ public class Caterpillar
         CheckCollision();
     }
 
-    public void MoveLeft()
+    public void MoveLeft(int steps)
     {
         if (headX > 0)
         {
-            ICommand command = new MovingLeftCommand(this);
-            command.Execute();
-            commandHistory.Push(command);
-            Log.Information("Command: Moveleft executed.");
+            for (int i = 0; i < steps; i++)
+            {
+                ICommand command = new MovingLeftCommand(this);
+                command.Execute();
+                commandHistory.Push(command);
+                Log.Information("Command: Moveleft executed.");
+                UpdateCommandExecutionCount(command, steps);
+            }
         }
     }
 
@@ -82,14 +98,18 @@ public class Caterpillar
         CheckCollision();
     }
 
-    public void MoveRight()
+    public void MoveRight(int steps)
     {
         if (headX < planet.GetLength(0) - 1)
         {
-            ICommand command = new MovingRightCommand(this);
-            command.Execute();
-            commandHistory.Push(command);
-            Log.Information("Command: MoveRight executed.");
+            for (int i = 0; i < steps; i++)
+            {
+                ICommand command = new MovingRightCommand(this);
+                command.Execute();
+                commandHistory.Push(command);
+                Log.Information("Command: MoveRight executed.");
+                UpdateCommandExecutionCount(command, steps);
+            }
         }
     }
 
@@ -100,7 +120,17 @@ public class Caterpillar
         headX++;
         CheckCollision();
     }
-
+    private void UpdateCommandExecutionCount(ICommand command, int count)
+    {
+        if (commandExecutionCount.ContainsKey(command))
+        {
+            commandExecutionCount[command] += count;
+        }
+        else
+        {
+            commandExecutionCount.Add(command, count);
+        }
+    }
     public void Grow()
     {
         if (segments.Count < MaxSegments)
@@ -190,9 +220,18 @@ public class Caterpillar
         if (commandHistory.Count > 0)
         {
             ICommand command = commandHistory.Pop();
-            command.Undo();
-            redoHistory.Push(command);
             Log.Information("Undo: Command {CommandName} undone.", command.GetType().Name);
+            int executionCount = commandExecutionCount.ContainsKey(command) ? commandExecutionCount[command] : 1;
+            for (int i = 0; i < executionCount; i++)
+            {
+                command.Undo();
+            }
+
+            redoHistory.Push(command);
+        }
+        else
+        {
+            Console.WriteLine("Nothing to undo.");
         }
     }
 
@@ -201,10 +240,24 @@ public class Caterpillar
         if (redoHistory.Count > 0)
         {
             ICommand command = redoHistory.Pop();
-            command.Execute();
+            Log.Information("Redo: Command {CommandName} redone.", command.GetType().Name);
+
+            // Redo the command for the number of times it was executed
+            int executionCount = commandExecutionCount.ContainsKey(command) ? commandExecutionCount[command] : 1;
+            for (int i = 0; i < executionCount; i++)
+            {
+                command.Execute();
+            }
+
+            // Move the command back to the command history
             commandHistory.Push(command);
         }
+        else
+        {
+            Console.WriteLine("Nothing to redo.");
+        }
     }
+
 
 }
 

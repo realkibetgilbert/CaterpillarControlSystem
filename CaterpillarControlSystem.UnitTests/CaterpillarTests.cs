@@ -11,8 +11,8 @@ public class CaterpillarTests
         Caterpillar caterpillar = new Caterpillar(planet);
 
         // Set the head position to a spice location
-        caterpillar.MoveUp();
-        caterpillar.MoveUp();
+        caterpillar.MoveUp(1);
+        caterpillar.MoveUp(1);
         int headX = caterpillar.GetHeadX();
         int headY = caterpillar.GetHeadY();
         planet[headX, headY] = '$';
@@ -32,8 +32,8 @@ public class CaterpillarTests
         Caterpillar caterpillar = new Caterpillar(planet);
 
         // Set the head position to a booster location
-        caterpillar.MoveUp();
-        caterpillar.MoveUp();
+        caterpillar.MoveUp(1);
+        caterpillar.MoveUp(1);
         int headX = caterpillar.GetHeadX();
         int headY = caterpillar.GetHeadY();
         planet[headX, headY] = 'B';
@@ -53,8 +53,8 @@ public class CaterpillarTests
         Caterpillar caterpillar = new Caterpillar(planet);
 
        
-        caterpillar.MoveUp();
-        caterpillar.MoveUp();
+        caterpillar.MoveUp(1);
+        caterpillar.MoveUp(1);
         int headX = caterpillar.GetHeadX();
         int headY = caterpillar.GetHeadY();
         planet[headX, headY] = '#';
@@ -77,7 +77,7 @@ public class CaterpillarTests
         int initialHeadY = caterpillar.GetHeadY();
 
         // Act
-        caterpillar.MoveUp();
+        caterpillar.MoveUp(1);
 
         int newHeadY = caterpillar.GetHeadY();
 
@@ -92,12 +92,12 @@ public class CaterpillarTests
         Program.InitializePlanet(planet);
         Caterpillar caterpillar = new Caterpillar(planet);
 
-        caterpillar.MoveUp(); 
+        caterpillar.MoveUp(1); 
 
         int initialHeadY = caterpillar.GetHeadY();
 
         // Act
-        caterpillar.MoveDown();
+        caterpillar.MoveDown(1);
 
         int newHeadY = caterpillar.GetHeadY();
 
@@ -113,12 +113,12 @@ public class CaterpillarTests
         Program.InitializePlanet(planet);
         Caterpillar caterpillar = new Caterpillar(planet);
 
-        caterpillar.MoveRight(); // Move the head right once
+        caterpillar.MoveRight(1); // Move the head right once
 
         int initialHeadX = caterpillar.GetHeadX();
 
         // Act
-        caterpillar.MoveLeft();
+        caterpillar.MoveLeft(1);
         int newHeadX = caterpillar.GetHeadX();
 
         // Assert
@@ -133,12 +133,12 @@ public class CaterpillarTests
         Caterpillar caterpillar = new Caterpillar(planet);
 
         // Set the initial head position to allow moving right
-        caterpillar.MoveLeft(); // Move the head left once
+        caterpillar.MoveLeft(1); // Move the head left once
 
         int initialHeadX = caterpillar.GetHeadX();
 
         // Act
-        caterpillar.MoveRight();
+        caterpillar.MoveRight(1);
         int newHeadX = caterpillar.GetHeadX();
 
         // Assert
@@ -181,5 +181,23 @@ public class CaterpillarTests
         // Assert
         Assert.True(newSegmentCount < initialSegmentCount);
     }
+    [Fact]
+    public void Undo_WhenCommandHistoryHasCommands_ShouldUndoLastCommand()
+    {
+        // Arrange
+        char[,] planet = new char[30, 30];
+        Program.InitializePlanet(planet);
+        Caterpillar caterpillar = new Caterpillar(planet);
 
+        // Move the caterpillar
+        caterpillar.MoveUp(1);
+
+        int initialHeadY = caterpillar.GetHeadY();
+
+        // Act: Undo the move
+        caterpillar.Undo();
+
+        // Assert: The head should be back to the initial position
+        Assert.Equal(initialHeadY, caterpillar.GetHeadY());
+    }
 }
